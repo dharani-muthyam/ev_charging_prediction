@@ -1,0 +1,57 @@
+# Python bytecode / caches
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.pytest_cache/
+.mypy_cache/
+.ipynb_checkpoints/
+
+# Virtual environments
+.venv/
+venv/
+env/
+ENV/
+.conda/
+
+# Distribution / packaging
+build/
+dist/
+*.egg-info/
+.eggs/
+
+# IDE / editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+.DS_Store
+
+# Generated data artifacts
+data/raw/*
+data/interim/*
+data/processed/*
+!data/raw/.gitkeep
+!data/interim/.gitkeep
+!data/processed/.gitkeep
+
+# Generated model artifacts
+models/*
+!models/*.joblib
+!models/*.pkl
+
+# Generated results (keep structure, ignore outputs)
+results/figures/*
+results/tables/*
+results/predictions/*
+!results/figures/.gitkeep
+!results/tables/.gitkeep
+!results/predictions/.gitkeep
+
+# Generated reports
+reports/*.html
+reports/*.pdf
+
+# Environment / secrets
+.env
+*.env

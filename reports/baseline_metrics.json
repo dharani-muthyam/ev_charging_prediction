@@ -1,0 +1,63 @@
+{
+  "baseline": "persistence",
+  "rule": "y_pred = lag_1",
+  "model_fitted": false,
+  "target_column": "demand_kwh",
+  "predictor_column": "lag_1",
+  "test": {
+    "mae": 46.98329971754367,
+    "rmse": 265.9338745931689,
+    "r2": 0.8893062778664147,
+    "n_obs": 238975,
+    "residual_mean": 0.17338881333472816,
+    "target_std": 799.3043300132772,
+    "target_mean": 232.80194915786169,
+    "prediction_equals_lag_1": true,
+    "target_used_in_prediction": false,
+    "split": "test",
+    "rows": 238975,
+    "n_zones": 275,
+    "time_min": "2023-01-23 19:00:00",
+    "time_max": "2023-02-28 23:00:00"
+  },
+  "train": {
+    "mae": 57.950236797388285,
+    "rmse": 309.91465504400105,
+    "r2": 0.8741740594149648,
+    "n_obs": 949025,
+    "residual_mean": -0.05420221630972121,
+    "target_std": 873.6893072565707,
+    "target_mean": 268.52535771165594,
+    "prediction_equals_lag_1": true,
+    "target_used_in_prediction": false,
+    "split": "train",
+    "rows": 949025,
+    "n_zones": 275,
+    "time_min": "2022-09-02 00:00:00",
+    "time_max": "2023-01-23 18:00:00"
+  },
+  "test_is_headline": true,
+  "train_is_diagnostic_only": true,
+  "validation_checks": {
+    "test_row_count_matches_features": true,
+    "test_zone_time_ordered": true,
+    "no_missing_values": true,
+    "prediction_equals_lag_1": true,
+    "target_not_used_in_prediction": true,
+    "metrics_all_finite": true,
+    "r2_defined": true,
+    "test_after_train_every_zone": true,
+    "all_checks_passed": true
+  },
+  "notes": [
+    "metrics computed with numpy only; no model was fitted or tuned",
+    "test metrics are the headline result; train metrics are diagnostic",
+    "demand_kwh used as label only, never as a prediction input",
+    "existing chronological split reused unchanged"
+  ],
+  "artifacts": {
+    "predictions": "C:\\Users\\Lenovo\\Desktop\\EV_charging_prediction\\data\\processed\\baseline_test_predictions.csv",
+    "metrics": "C:\\Users\\Lenovo\\Desktop\\EV_charging_prediction\\reports\\baseline_metrics.json",
+    "report": "C:\\Users\\Lenovo\\Desktop\\EV_charging_prediction\\reports\\baseline_persistence.md"
+  }
+}

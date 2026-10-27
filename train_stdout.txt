@@ -1,0 +1,125 @@
+{
+  "target": "demand_kwh",
+  "predictors": [
+    "hour",
+    "day_of_week",
+    "month",
+    "lag_1",
+    "lag_24"
+  ],
+  "excluded": [
+    "demand_kwh",
+    "time",
+    "zone_id",
+    "split",
+    "predicted_kwh",
+    "residual_kwh"
+  ],
+  "random_seed": 42,
+  "train_rows": 949025,
+  "train_zones": 275,
+  "test_rows": 238975,
+  "test_zones": 275,
+  "baseline_test": {
+    "mae": 46.98329971754367,
+    "rmse": 265.9338745931689,
+    "r2": 0.8893062778664147
+  },
+  "models": {
+    "linear_regression": {
+      "label": "Linear Regression",
+      "test": {
+        "mae": 43.299036920954336,
+        "rmse": 174.0559872207208,
+        "r2": 0.9525808677407089,
+        "n_obs": 238975,
+        "split": "test",
+        "rows": 238975,
+        "n_zones": 275,
+        "time_min": "2023-01-23 19:00:00",
+        "time_max": "2023-02-28 23:00:00"
+      },
+      "train": {
+        "mae": 52.811077483666935,
+        "rmse": 202.6727480628273,
+        "r2": 0.9461883050972324,
+        "n_obs": 949025,
+        "split": "train",
+        "rows": 949025,
+        "n_zones": 275
+      },
+      "comparison": {
+        "baseline": {
+          "mae": 46.98329971754367,
+          "rmse": 265.9338745931689,
+          "r2": 0.8893062778664147
+        },
+        "model": {
+          "mae": 43.299036920954336,
+          "rmse": 174.0559872207208,
+          "r2": 0.9525808677407089
+        },
+        "mae_delta": -3.684262796589337,
+        "rmse_delta": -91.87788737244813,
+        "r2_delta": 0.06327458987429424,
+        "beats_baseline_on_all_three": true,
+        "n_test_rows_model": 238975,
+        "n_test_rows_baseline": 238975,
+        "same_test_rows": true
+      },
+      "model_path": "C:\\Users\\Lenovo\\Desktop\\EV_charging_prediction\\models\\linear_regression.joblib",
+      "predictions_path": "C:\\Users\\Lenovo\\Desktop\\EV_charging_prediction\\results\\predictions\\linear_regression_test_predictions.csv"
+    },
+    "random_forest": {
+      "label": "Random Forest",
+      "test": {
+        "mae": 33.32718651526892,
+        "rmse": 151.7771972185629,
+        "r2": 0.963943071715558,
+        "n_obs": 238975,
+        "split": "test",
+        "rows": 238975,
+        "n_zones": 275,
+        "time_min": "2023-01-23 19:00:00",
+        "time_max": "2023-02-28 23:00:00"
+      },
+      "train": {
+        "mae": 35.96510618208407,
+        "rmse": 158.48972997522813,
+        "r2": 0.9670930061678644,
+        "n_obs": 949025,
+        "split": "train",
+        "rows": 949025,
+        "n_zones": 275
+      },
+      "comparison": {
+        "baseline": {
+          "mae": 46.98329971754367,
+          "rmse": 265.9338745931689,
+          "r2": 0.8893062778664147
+        },
+        "model": {
+          "mae": 33.32718651526892,
+          "rmse": 151.7771972185629,
+          "r2": 0.963943071715558
+        },
+        "mae_delta": -13.656113202274753,
+        "rmse_delta": -114.15667737460603,
+        "r2_delta": 0.07463679384914335,
+        "beats_baseline_on_all_three": true,
+        "n_test_rows_model": 238975,
+        "n_test_rows_baseline": 238975,
+        "same_test_rows": true
+      },
+      "model_path": "C:\\Users\\Lenovo\\Desktop\\EV_charging_prediction\\models\\random_forest.joblib",
+      "predictions_path": "C:\\Users\\Lenovo\\Desktop\\EV_charging_prediction\\results\\predictions\\random_forest_test_predictions.csv"
+    }
+  },
+  "combined_rows": 238975,
+  "artifacts": {
+    "metrics": "C:\\Users\\Lenovo\\Desktop\\EV_charging_prediction\\reports\\model_metrics.json",
+    "report": "C:\\Users\\Lenovo\\Desktop\\EV_charging_prediction\\reports\\model_comparison.md",
+    "table": "C:\\Users\\Lenovo\\Desktop\\EV_charging_prediction\\results\\tables\\model_comparison.csv",
+    "combined_predictions": "C:\\Users\\Lenovo\\Desktop\\EV_charging_prediction\\results\\predictions\\model_test_predictions.csv"
+  }
+}
