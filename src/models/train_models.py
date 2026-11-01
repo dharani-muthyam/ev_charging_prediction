@@ -97,6 +97,22 @@ TIME_COLUMN = "time"
 # features derived from the row's own timestamp (known at forecast time).
 PREDICTOR_COLUMNS: tuple[str, ...] = ("hour", "day_of_week", "month", "lag_1", "lag_24")
 
+# Static zone attributes from src.features.zone_features (piles, area, station
+# count, centroid). They are administrative constants, not time series, so they
+# are known at forecast time and cannot leak the target.
+ZONE_FEATURE_COLUMNS: tuple[str, ...] = (
+    "zone_charge_count",
+    "zone_area_km2",
+    "zone_perimeter_km",
+    "zone_piles_per_km2",
+    "zone_n_stations",
+    "zone_longitude",
+    "zone_latitude",
+)
+
+# The extended predictor set, used when the zone-enriched feature tables exist.
+ZONE_PREDICTOR_COLUMNS: tuple[str, ...] = PREDICTOR_COLUMNS + ZONE_FEATURE_COLUMNS
+
 # Columns that must never be predictors, with the reason recorded for clarity.
 FORBIDDEN_PREDICTORS: dict[str, str] = {
     TARGET_COLUMN: "the target itself (would leak the answer)",
@@ -105,7 +121,13 @@ FORBIDDEN_PREDICTORS: dict[str, str] = {
     "split": "train/test membership (would leak the split)",
     "predicted_kwh": "a prediction, never an input",
     "residual_kwh": "derived from the target",
+    # Contemporaneous observations of the hour being predicted. They describe
+    # the outcome rather than precede it, so they are never predictors.
+    "occupancy": "same-hour observation of the predicted interval (leak)",
+    "duration": "same-hour observation of the predicted interval (leak)",
 }
+
+
 
 RANDOM_SEED = 42
 
@@ -224,6 +246,10 @@ def train_and_evaluate(
     y_train = train_df[target].to_numpy(dtype=float)
     x_test = test_df.loc[:, list(predictors)]
     y_test = test_df[target].to_numpy(dtype=float)
+
+    if not all(pd.api.types.is_numeric_dtype(x_train[c]) for c in x_train.columns):
+        bad = [c for c in x_train.columns if not pd.api.types.is_numeric_dtype(x_train[c])]
+        raise TypeError(f"non-numeric predictor column(s): {bad}")
 
     model = get_estimator(key)
     model.fit(x_train, y_train)

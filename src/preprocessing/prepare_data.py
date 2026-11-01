@@ -147,12 +147,28 @@ def validate_wide(df: pd.DataFrame) -> None:
         n_bad = int((deltas != pd.Timedelta(hours=1)).sum())
         raise ValueError(f"Time index is not hourly/contiguous: {n_bad} irregular interval(s).")
 
-    if df.columns.has_duplicates:
-        dups = df.columns[df.columns.duplicated()].tolist()
-        raise ValueError(f"Duplicate zone columns found: {dups}")
-
     if df.shape[1] == 0:
         raise ValueError("No zone columns present.")
+
+    # Detect duplicate zone labels by their *string* form. pandas 3's
+    # ``DataFrame`` constructor silently de-duplicates labels, so a frame built
+    # from ["102", "102"] arrives as ["102", "102.1"] and
+    # ``Index.has_duplicates`` reports False. The original labels are gone, so
+    # the mangled form is detected via pandas' ``<label>.<n>`` suffix
+    # convention. Real UrbanEV zone IDs are plain integers, so a base label of
+    # that form never occurs legitimately; the check is therefore safe here.
+    labels = [str(c) for c in df.columns]
+    dups = sorted({lab for lab in labels if labels.count(lab) > 1})
+    mangled = sorted(
+        {
+            base
+            for lab in labels
+            for base in [lab.rsplit(".", 1)[0]]
+            if lab != base and base in labels
+        }
+    )
+    if dups or mangled:
+        raise ValueError(f"Duplicate zone columns found: {dups + mangled}")
 
 
 # --------------------------------------------------------------------------

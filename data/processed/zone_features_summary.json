@@ -1,0 +1,70 @@
+{
+  "sources": {
+    "zone_information": "C:\\Users\\Lenovo\\Desktop\\EV_charging_prediction\\data\\raw\\UrbanEVDataset\\20220901-20230228_zone-cleaned-aggregated\\zone-information.csv",
+    "station_information": "C:\\Users\\Lenovo\\Desktop\\EV_charging_prediction\\data\\raw\\UrbanEVDataset\\20220901-20230228_zone-cleaned-aggregated\\station_information.csv"
+  },
+  "feature_columns": [
+    "zone_charge_count",
+    "zone_area_km2",
+    "zone_perimeter_km",
+    "zone_piles_per_km2",
+    "zone_n_stations",
+    "zone_longitude",
+    "zone_latitude"
+  ],
+  "train": {
+    "rows_before": 949025,
+    "rows_after": 949025,
+    "zones_in_demand": 275,
+    "zones_with_metadata": 275,
+    "unmatched_zones": [],
+    "zones_in_metadata_not_in_demand": [],
+    "join_type": "many_to_one (static zone attributes)",
+    "features": [
+      "zone_charge_count",
+      "zone_area_km2",
+      "zone_perimeter_km",
+      "zone_piles_per_km2",
+      "zone_n_stations",
+      "zone_longitude",
+      "zone_latitude"
+    ]
+  },
+  "test": {
+    "rows_before": 238975,
+    "rows_after": 238975,
+    "zones_in_demand": 275,
+    "zones_with_metadata": 275,
+    "unmatched_zones": [],
+    "zones_in_metadata_not_in_demand": [],
+    "join_type": "many_to_one (static zone attributes)",
+    "features": [
+      "zone_charge_count",
+      "zone_area_km2",
+      "zone_perimeter_km",
+      "zone_piles_per_km2",
+      "zone_n_stations",
+      "zone_longitude",
+      "zone_latitude"
+    ]
+  },
+  "zone_table_rows": 275,
+  "metadata_consistency": {
+    "zones_compared": 275,
+    "zones_where_counts_agree": 154,
+    "max_abs_difference": 221.0,
+    "correlation": 0.8873259223581115,
+    "note": "station_information.csv is a *filtered* subset of stations; zone-information.charge_count is the authoritative zone total. The zone total is used as the predictor, station count only as a secondary descriptor."
+  },
+  "excluded_from_predictors": {
+    "TAZID": "zone label; numeric ordering is meaningless",
+    "station_id": "station label; aggregated to a zone count instead",
+    "occupancy.csv": "contemporaneous observation of the predicted hour (would leak)",
+    "duration.csv": "contemporaneous observation of the predicted hour (would leak)"
+  },
+  "leakage_notes": [
+    "all zone features are static administrative attributes",
+    "no timestamp-dependent quantity from the raw source is joined",
+    "join validated as many_to_one; row count preserved"
+  ]
+}

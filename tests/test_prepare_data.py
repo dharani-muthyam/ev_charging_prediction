@@ -53,7 +53,18 @@ def test_wide_to_long_is_lossless_roundtrip():
     long_df = wide_to_long(wide)
     back = long_df.pivot(index="time", columns="zone_id", values="demand_kwh")
     back = back[wide.columns]
-    pd.testing.assert_frame_equal(back, wide, check_names=False)
+    # The pivot re-indexes from a plain object index, so the reconstructed
+    # frame carries no `freq`; that is an index attribute, not a value change.
+    # Normalise the metadata we do not care about, then require exact equality
+    # of the demand values (bit-for-bit, not approximate).
+    pd.testing.assert_index_equal(back.index, wide.index, exact=True)
+    pd.testing.assert_frame_equal(
+        back.reset_index(drop=True),
+        wide.reset_index(drop=True),
+        check_names=False,
+        check_freq=False,
+    )
+    assert np.array_equal(back.to_numpy(), wide.to_numpy())
 
 
 # ---------------------------------------------------------------- calendar
@@ -151,8 +162,24 @@ def test_validate_wide_rejects_duplicate_timestamps():
         validate_wide(wide)
 
 
-def test_validate_wide_rejects_duplicate_columns():
-    wide = _wide(periods=3, zones=("102", "102"))
+def test_validate_wide_rejects_pandas_mangled_duplicate_columns():
+    """pandas 3 silently renames a repeated construction key to "102.1".
+
+    The schema edge case: the duplicate literal cannot even be constructed, so
+    the only observable form is pandas' ``<label>.<n>`` suffix. Guards against
+    two zones silently collapsing into one.
+    """
+    idx = pd.date_range("2022-09-01", periods=3, freq="h", name="time")
+    wide = pd.DataFrame({"102": [1.0, 2.0, 3.0], "102.1": [4.0, 5.0, 6.0]}, index=idx)
+    with pytest.raises(ValueError, match="Duplicate zone columns"):
+        validate_wide(wide)
+
+
+def test_validate_wide_rejects_genuine_duplicate_columns():
+    """A frame whose columns really are duplicated (not built from a dict)."""
+    wide = _wide(periods=3, zones=("102", "104"))
+    wide.columns = ["102", "102"]
+    assert wide.columns.has_duplicates
     with pytest.raises(ValueError, match="Duplicate zone columns"):
         validate_wide(wide)
 
@@ -165,7 +192,10 @@ def test_zone_id_roundtrips_as_string(tmp_path):
     from src.preprocessing.prepare_data import _dump_csv, load_processed
 
     long_df = wide_to_long(_wide(periods=3, zones=("102", "1000")))
-    assert long_df["zone_id"].dtype == object
+    # pandas 3 returns the (still textual) StringDtype rather than object;
+    # either is a string dtype and both must round-trip as text.
+    assert pd.api.types.is_string_dtype(long_df["zone_id"])
+    assert not pd.api.types.is_numeric_dtype(long_df["zone_id"])
     path = tmp_path / "out.csv"
     _dump_csv(long_df, path)
     back = load_processed(path)

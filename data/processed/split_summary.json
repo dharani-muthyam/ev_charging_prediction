@@ -1,0 +1,40 @@
+{
+  "source": "C:\\Users\\Lenovo\\Desktop\\EV_charging_prediction\\data\\raw\\UrbanEVDataset\\20220901-20230228_zone-cleaned-aggregated\\charge_1hour\\volume.csv",
+  "wide_shape": [
+    4344,
+    275
+  ],
+  "long_shape": [
+    1194600,
+    3
+  ],
+  "n_zones": 275,
+  "train_rows": 955625,
+  "test_rows": 238975,
+  "train_fraction": 0.8,
+  "train_time_min": "2022-09-01 00:00:00",
+  "train_time_max": "2023-01-23 18:00:00",
+  "test_time_min": "2023-01-23 19:00:00",
+  "test_time_max": "2023-02-28 23:00:00",
+  "global_train_time_max": "2023-01-23 19:00:00",
+  "columns": [
+    "time",
+    "zone_id",
+    "demand_kwh",
+    "hour",
+    "day_of_week",
+    "month"
+  ],
+  "per_zone_example": {
+    "1000": {
+      "n_train": 3475,
+      "n_test": 869,
+      "train_end": "2023-01-23 18:00:00",
+      "test_start": "2023-01-23 19:00:00"
+    }
+  },
+  "per_zone_split_consistent": true,
+  "excluded": [
+    "occupancy.csv (values outside 0-100 under investigation)"
+  ]
+}

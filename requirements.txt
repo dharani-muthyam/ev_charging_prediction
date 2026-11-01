@@ -1,7 +1,12 @@
-pandas
-numpy
-scikit-learn
-matplotlib
-seaborn
-joblib
-pytest
+# Runtime dependencies — everything imported by src/ and app/
+# (verified with: python -m pytest && streamlit run app/streamlit_app.py)
+pandas>=2.2,<4
+numpy>=1.26,<3
+scikit-learn>=1.4,<2
+joblib>=1.3,<2
+matplotlib>=3.8,<4
+seaborn>=0.13,<1
+streamlit>=1.40,<2
+
+# Development / testing dependency (pytest, not pytest-cov: only pytest is used)
+pytest>=7.0,<10

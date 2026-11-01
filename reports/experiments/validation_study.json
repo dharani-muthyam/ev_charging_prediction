@@ -1,0 +1,243 @@
+{
+  "design": {
+    "validation_fold": {
+      "train_rows": 759275,
+      "valid_rows": 189750,
+      "n_zones": 275,
+      "train_time_min": "2022-09-02 00:00:00",
+      "train_time_max": "2022-12-26 00:00:00",
+      "valid_time_min": "2022-12-26 01:00:00",
+      "valid_time_max": "2023-01-23 18:00:00",
+      "validation_fraction": 0.2,
+      "chronological_per_zone": true
+    },
+    "final_test": {
+      "rows": 238975,
+      "n_zones": 275,
+      "time_min": "2023-01-23 19:00:00",
+      "time_max": "2023-02-28 23:00:00"
+    },
+    "selection_rule": "lowest validation RMSE (chosen before viewing test metrics)",
+    "test_used_for_selection": false,
+    "random_seed": 42,
+    "max_fit_rows": null,
+    "quick_mode": false
+  },
+  "validation_results": [
+    {
+      "name": "rf_reference",
+      "label": "Random Forest (reference: 100 trees, depth 20, leaf 20)",
+      "family": "rf",
+      "params": {
+        "n_estimators": 100,
+        "max_depth": 20,
+        "min_samples_leaf": 20
+      },
+      "predictors_mode": "base",
+      "n_predictors": 5,
+      "fit_rows": 759275,
+      "valid": {
+        "mae": 35.425702092303844,
+        "rmse": 157.95008593933312,
+        "r2": 0.9577742436837305,
+        "rows": 189750
+      },
+      "fit_seconds": 600.58
+    },
+    {
+      "name": "rf_leaf50_depth16",
+      "label": "Random Forest (150 trees, depth 16, leaf 50)",
+      "family": "rf",
+      "params": {
+        "n_estimators": 150,
+        "max_depth": 16,
+        "min_samples_leaf": 50
+      },
+      "predictors_mode": "base",
+      "n_predictors": 5,
+      "fit_rows": 759275,
+      "valid": {
+        "mae": 36.04790467311587,
+        "rmse": 161.6361623075633,
+        "r2": 0.9557804045485122,
+        "rows": 189750
+      },
+      "fit_seconds": 556.78
+    },
+    {
+      "name": "rf_leaf100_depth24",
+      "label": "Random Forest (150 trees, depth 24, leaf 100)",
+      "family": "rf",
+      "params": {
+        "n_estimators": 150,
+        "max_depth": 24,
+        "min_samples_leaf": 100
+      },
+      "predictors_mode": "base",
+      "n_predictors": 5,
+      "fit_rows": 759275,
+      "valid": {
+        "mae": 36.71404739930776,
+        "rmse": 164.35402773607711,
+        "r2": 0.9542808226667808,
+        "rows": 189750
+      },
+      "fit_seconds": 2020.71
+    },
+    {
+      "name": "rf_zone_features",
+      "label": "Random Forest (reference params + static zone features)",
+      "family": "rf",
+      "params": {
+        "n_estimators": 100,
+        "max_depth": 20,
+        "min_samples_leaf": 20
+      },
+      "predictors_mode": "zone",
+      "n_predictors": 12,
+      "fit_rows": 759275,
+      "valid": {
+        "mae": 34.57378910210237,
+        "rmse": 154.314647382811,
+        "r2": 0.9596956422017573,
+        "rows": 189750
+      },
+      "fit_seconds": 595.46
+    },
+    {
+      "name": "hgb_leaf100_lr005",
+      "label": "HistGradientBoosting (400 iters, lr 0.05, leaf 100)",
+      "family": "hgb",
+      "params": {
+        "max_iter": 400,
+        "learning_rate": 0.05,
+        "max_leaf_nodes": 100
+      },
+      "predictors_mode": "base",
+      "n_predictors": 5,
+      "fit_rows": 759275,
+      "valid": {
+        "mae": 38.728615550903534,
+        "rmse": 180.58558687000206,
+        "r2": 0.944804474336205,
+        "rows": 189750
+      },
+      "fit_seconds": 15.55
+    },
+    {
+      "name": "hgb_zone_features",
+      "label": "HistGradientBoosting (400 iters, lr 0.05, leaf 100 + zone features)",
+      "family": "hgb",
+      "params": {
+        "max_iter": 400,
+        "learning_rate": 0.05,
+        "max_leaf_nodes": 100
+      },
+      "predictors_mode": "zone",
+      "n_predictors": 12,
+      "fit_rows": 759275,
+      "valid": {
+        "mae": 35.32577200628085,
+        "rmse": 160.2570806994446,
+        "r2": 0.9565317497739356,
+        "rows": 189750
+      },
+      "fit_seconds": 34.18
+    }
+  ],
+  "selected_candidate": {
+    "name": "rf_zone_features",
+    "label": "Random Forest (reference params + static zone features)",
+    "family": "rf",
+    "params": {
+      "n_estimators": 100,
+      "max_depth": 20,
+      "min_samples_leaf": 20
+    },
+    "predictors": [
+      "hour",
+      "day_of_week",
+      "month",
+      "lag_1",
+      "lag_24",
+      "zone_charge_count",
+      "zone_area_km2",
+      "zone_perimeter_km",
+      "zone_piles_per_km2",
+      "zone_n_stations",
+      "zone_longitude",
+      "zone_latitude"
+    ],
+    "validation": {
+      "mae": 34.57378910210237,
+      "rmse": 154.314647382811,
+      "r2": 0.9596956422017573,
+      "rows": 189750
+    },
+    "refit_rows": 949025,
+    "refit_seconds": 772.59
+  },
+  "final_test": {
+    "mae": 32.78897433969699,
+    "rmse": 151.10084839068074,
+    "r2": 0.9642637091350759,
+    "rows": 238975,
+    "n_zones": 275,
+    "time_min": "2023-01-23 19:00:00",
+    "time_max": "2023-02-28 23:00:00"
+  },
+  "reference": {
+    "models": {
+      "linear_regression": {
+        "label": "Linear Regression",
+        "mae": 43.299036920954336,
+        "rmse": 174.0559872207208,
+        "r2": 0.9525808677407089,
+        "n_obs": 238975,
+        "split": "test",
+        "rows": 238975,
+        "n_zones": 275,
+        "time_min": "2023-01-23 19:00:00",
+        "time_max": "2023-02-28 23:00:00"
+      },
+      "random_forest": {
+        "label": "Random Forest",
+        "mae": 33.32718651526892,
+        "rmse": 151.7771972185629,
+        "r2": 0.963943071715558,
+        "n_obs": 238975,
+        "split": "test",
+        "rows": 238975,
+        "n_zones": 275,
+        "time_min": "2023-01-23 19:00:00",
+        "time_max": "2023-02-28 23:00:00"
+      }
+    },
+    "baseline": {
+      "mae": 46.98329971754367,
+      "rmse": 265.9338745931689,
+      "r2": 0.8893062778664147,
+      "rows": 238975
+    }
+  },
+  "verdict": {
+    "reference_model": "random_forest",
+    "reference_test": {
+      "mae": 33.32718651526892,
+      "rmse": 151.7771972185629,
+      "r2": 0.963943071715558
+    },
+    "selected_test": {
+      "mae": 32.78897433969699,
+      "rmse": 151.10084839068074,
+      "r2": 0.9642637091350759
+    },
+    "beats_reference_on_all_three": true,
+    "delta_mae": -0.5382121755719282,
+    "delta_rmse": -0.6763488278821512,
+    "delta_r2": 0.0003206374195178219,
+    "same_test_rows": true,
+    "selected_was_best_on_validation": true,
+    "caveat": "validation ranking does not guarantee a test-set improvement; the verdict above is based on the measured final-test numbers only"
+  }
+}

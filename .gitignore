@@ -5,6 +5,7 @@ __pycache__/
 *.so
 .pytest_cache/
 .mypy_cache/
+.ruff_cache/
 .ipynb_checkpoints/
 
 # Virtual environments
@@ -27,31 +28,67 @@ dist/
 *.swo
 .DS_Store
 
-# Generated data artifacts
+# Raw dataset (large; see README "Dataset preparation")
 data/raw/*
-data/interim/*
-data/processed/*
 !data/raw/.gitkeep
-!data/interim/.gitkeep
-!data/processed/.gitkeep
+!data/raw/README.md
 
-# Generated model artifacts
+# Intermediate data
+data/interim/*
+!data/interim/.gitkeep
+
+# Generated feature tables (large; reproducible from the pipeline)
+data/processed/*
+!data/processed/.gitkeep
+!data/processed/split_summary.json
+!data/processed/split_metadata.csv
+!data/processed/features_summary.json
+!data/processed/zone_features_summary.json
+!data/processed/baseline_test_predictions.csv
+
+# Model artifacts
+# Models are tracked through Git LFS (see .gitattributes), so they are NOT
+# ignored here. Transient/scratch model files still are.
 models/*
 !models/*.joblib
 !models/*.pkl
+models/tmp/*
+models/*.tmp
 
-# Generated results (keep structure, ignore outputs)
+# Generated results: keep the folder structure and the small comparison table,
+# ignore the large per-row prediction files and figures (regenerable).
 results/figures/*
-results/tables/*
 results/predictions/*
 !results/figures/.gitkeep
-!results/tables/.gitkeep
 !results/predictions/.gitkeep
+!results/tables/.gitkeep
+!results/tables/model_comparison.csv
+!results/tables/validation_study.csv
+results/experiments/*
+!results/experiments/.gitkeep
 
-# Generated reports
+# reports/ is CURATED DOCUMENTATION and stays tracked in full
+# (dataset_validation.txt, baseline_*, model_*, experiments/). Only throw-away
+# web exports are ignored.
 reports/*.html
 reports/*.pdf
+
+# Temporary run logs (captured output, not project evidence)
+train_stdout.txt
+train_stderr.txt
+*_stdout.txt
+*_stderr.txt
+*.log
+
+# Local Streamlit server bookkeeping and browser-QA scratch files
+st_out.txt
+st_err.txt
+st_pid.txt
+_qa_*.mjs
+qa_*.png
+st_app.png
 
 # Environment / secrets
 .env
 *.env
+.env.*

@@ -1,0 +1,32 @@
+{
+  "source": "C:\\Users\\Lenovo\\Desktop\\EV_charging_prediction\\data\\processed\\demand_long.csv",
+  "lag_hours": [
+    1,
+    24
+  ],
+  "target_column": "demand_kwh",
+  "predictor_columns": [
+    "hour",
+    "day_of_week",
+    "month",
+    "lag_1",
+    "lag_24"
+  ],
+  "columns": [
+    "time",
+    "zone_id",
+    "demand_kwh",
+    "hour",
+    "day_of_week",
+    "month",
+    "lag_1",
+    "lag_24"
+  ],
+  "rows_before_dropna": 1194600,
+  "rows_after_dropna": 1188000,
+  "rows_dropped_warmup": 6600,
+  "n_zones": 275,
+  "time_min": "2022-09-02 00:00:00",
+  "time_max": "2023-02-28 23:00:00",
+  "dropped_policy": "rows lacking a complete lag set are dropped, never imputed; they occur only at the start of each zone's history"
+}
