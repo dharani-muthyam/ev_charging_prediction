@@ -23,7 +23,7 @@ import numpy as np
 import pandas as pd
 import streamlit as st
 
-from app.dashboard_text import (
+from dashboard_text import  (
     DAY_NAMES,
     MONTH_NAMES,
     column_context,
